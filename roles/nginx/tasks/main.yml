@@ -1,0 +1,23 @@
+---
+# tasks file for nginx
+
+- name: Install
+  apt: name=nginx state=latest
+
+- name: Start
+  service: name=nginx state=started enabled=true
+
+- name: Supprimer default.conf
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  notify: nginx reload
+
+- name: Création de la configuration nginx
+  template: src=templates/nginx.j2 dest=/etc/nginx/sites-available/{{ item.domain }} force=yes
+  notify: nginx reload
+
+- lineinfile: dest=/etc/php/7.0/fpm/php.ini regexp='date.timezone[\s]?=' line='date.timezone = {{ php_timezone }}'
+
+# Que l'on utilisera Ensuite
+- name: Installation du package {{ item }}
+  apt: name={{ item }} state=latest
+  with_items: php_packages

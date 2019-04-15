@@ -1,0 +1,9 @@
+- vars:
+  test: 'yoppolo'
+
+- name: Installation des serveurs web
+  hosts: web
+  remote_user: root
+  tasks: 
+    - name: Installation de Git
+       apt: name=git state=latest
