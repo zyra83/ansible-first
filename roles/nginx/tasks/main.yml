@@ -13,22 +13,13 @@
   file: path=/etc/nginx/sites-enabled/default state=absent
   notify: nginx reload
 
-- name: création du dossier
-  file: path=/home/{{ user}}/{{ domain}} state=directory owner={{ user }}
-
-- name: lier {{ domain }} vers www
+- name: Configuration de PHP
   become: yes
-  file: src=/home/{{ user}}/{{ domain}} dest=/var/www/{{ domain }} state=link
+  include: php.yml
 
-- name: Création de la configuration nginx
-  become: yes
-  template: src=templates/nginx.j2 dest=/etc/nginx/sites-available/{{ domain }}
-  notify: nginx reload
-
-- name: activation du domaine {{ domain }}
-  become: yes
-  file: src=/etc/nginx/sites-available/{{ domain }} dest=/etc/nginx/sites-enabled/{{ domain }} state=link
-  notify: nginx reload
+- name: COnfiguration des sites
+  include: site.yml
+  with_items: "{{ domains }}"
 
 # - lineinfile: dest=/etc/php/7.0/fpm/php.ini regexp='date.timezone[\s]?=' line='date.timezone = {{ php_timezone }}'
 

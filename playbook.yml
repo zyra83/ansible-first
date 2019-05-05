@@ -5,7 +5,9 @@
   remote_user: root
   vars:
     user: prod
-    domain: local.dev
+    domains: 
+      - local.dev
+      - local2.dev
 
   vars_files:
     - vars/spoilers.yml

@@ -1,0 +1,23 @@
+---
+
+- name: Ajoutd de la clé dotbed
+  apt_key:
+    url: https://www.dotdeb.org/dotdeb.gpg
+   
+- name: Ajout de dotbet aux dépots
+  apt_repository: repo='{{ item }}'
+  with_items:
+    - deb http://packages.dotdeb.org wheezy all
+    - deb-src http://packages.dotdeb.org wheezy all
+
+- name: APT update
+  apt: update_cache=yes
+
+- name: installation de PHP
+  apt: 
+    name: '{{ php_packages }}'
+    state: latest
+  
+
+#- name: Retrait des fonctions dangeureuses
+#  lineinfile: dest=/etc/php7.0/fpm/php.ini  regexp=''

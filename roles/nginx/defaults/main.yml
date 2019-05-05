@@ -1,6 +1,9 @@
 ---
 # defaults file for nginx
 php_timezone: Europe/Paris
+php_upload_max_filezise: "20M"
+php_post_max_filezise: "20M"
+php_memory_limit: "1024M"
 
 php_packages:
   - php7.0
