@@ -1,6 +1,5 @@
 ---
 # handlers file for nginx
 # handlers/main.yml
----
 - name: nginx reload
-  service: name=nginx state=reloaded
+  action: service name=nginx state=reloaded

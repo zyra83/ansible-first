@@ -1,0 +1,10 @@
+---
+- name: Installation des dépendances
+  apt: 
+    state: latest
+    update_cache: yes
+    pkg:
+      - vim
+      - htop
+      - zsh
+      - git

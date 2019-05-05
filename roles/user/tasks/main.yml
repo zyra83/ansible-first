@@ -1,0 +1,26 @@
+---
+
+- name: Installation des dépendances
+  apt: 
+    state: latest
+    update_cache: yes
+    pkg:
+      - sudo
+
+- name: création d'un utilisateur
+  when: user is defined
+  user: name="{{ user }}" comment="Administrateur de la prod" shell=/usr/bin/zsh
+
+- name: Ajout de la clé SSH
+  when: user is defined
+  authorized_key:
+    user: "{{ user }}"
+    state: present
+    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+
+- name: "{{ user }} devient sudoer"
+  when: user is defined
+  template: 
+    src: templates/sudoers.j2
+    dest: "/etc/sudoers.d/{{ user }}-sudoer"
+    validate: 'visudo -cf %s'
