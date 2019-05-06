@@ -8,11 +8,15 @@
     domains: 
       - local.dev
       - local2.dev
+    backup_root: backup
+    ansible_network_os: ios
+    ansible_connection: network_cli
 
   vars_files:
     - vars/spoilers.yml
 
   roles:
+    - backup
     - utils
     - user
     - nginx

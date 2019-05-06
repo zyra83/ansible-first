@@ -1,0 +1,14 @@
+---
+
+- name: Install
+  become: yes
+  apt: name=curl state=latest
+
+- name: show run
+  shell: "curl http://127.0.0.1"
+  register: config
+
+- name: save output to /etc/ansible/backups 
+  copy: 
+    content: "{{ config.stdout[0] }}"
+    dest: "/tmp/show_run_info.txt"
