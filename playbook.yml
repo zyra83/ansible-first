@@ -8,15 +8,15 @@
     domains: 
       - local.dev
       - local2.dev
-    backup_root: backup
-    ansible_network_os: ios
-    ansible_connection: network_cli
+    # backup_root: backup
+    # ansible_network_os: ios
+    # ansible_connection: network_cli
+    ansible_connection: ssh
 
   vars_files:
     - vars/spoilers.yml
 
   roles:
-    - backup
     - utils
     - user
     - nginx
@@ -27,3 +27,8 @@
       content="{{spoiler_text}}"
       dest=/tmp/spoiler_text.txt
 
+  - name: show all the hosts matching the pattern, i.e. all but the group www
+    debug:
+      msg: "{{ item }}"
+    with_inventory_hostnames:
+      - all:!webserver

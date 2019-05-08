@@ -8,7 +8,26 @@
   shell: "curl http://127.0.0.1"
   register: config
 
-- name: save output to /etc/ansible/backups 
-  copy: 
+# - name: save output to /etc/ansible/backups 
+#   copy: 
+#     content: "{{ config.stdout[0] }}"
+#     dest: "/tmp/show_run_info.txt"
+
+- name: ensure backup folder is created
+  file:
+    path: "{{ backup_root }}"
+    state: directory
+
+- name: ensure device folder is created
+  file:
+    path: "{{ backup_root }}/{{ ansible_net_hostname }}"
+    state: directory
+
+- name: get timestamp
+  command: date +%Y%m%d-%H-%M-%S
+  register: timestamp
+
+- name: copy run to file
+  copy:
     content: "{{ config.stdout[0] }}"
-    dest: "/tmp/show_run_info.txt"
+    dest: "{{ backup_root }}/{{ ansible_net_hostname }}/running-config_{{ timestamp.stdout }}"
